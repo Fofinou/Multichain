@@ -9,11 +9,11 @@ sys.path.insert(0,parentpath)
 from MultichainPython import Multichainpython
 from fileparser import ConfigFileParser
 
-# Farmland class
+# FactoryX class
 
-class Farmland:
+class FactoryX:
 	def __init__(self,rpcuser,rpcpasswd,rpchost,rpcport,chainname):
-		print "Farmland"
+		print "FactoryX"
 		self.rpcuser = rpcuser
 		self.rpcpasswd = rpcpasswd
 		self.rpchost = rpchost
@@ -29,11 +29,11 @@ class Farmland:
 	def connectTochain(self):
 		return self.mchain.multichainConnect()  
 	'''****************************************************************************************
-	Function Name 	:   farmAddress
+	Function Name 	:   factoryXAddress
 	Description		:	Function used to make api call to get the address of the node
 	Parameters 		:	None
 	****************************************************************************************'''
-	def farmAddress(self):
+	def factoryXAddress(self):
 		return self.mchain.accountAddress()
 	'''****************************************************************************************
 	Function Name 	:   assetsubscribe
@@ -69,27 +69,27 @@ class Farmland:
 		try:
 			# Getting the address of the present node.
 		    assetaddress = self.mchain.accountAddress()
-		    assetname = "crop" # name of the asset 
+		    assetname = "drug" # name of the asset
 		    assetdetails = {"name":assetname,"open":True} # making asset open will able us to issuemore in future after creating the asset
 		    assetquantity = 1000 # quantity of the asset to be created
 		    assetunit = 1 # Units of the asset to be created
 		    assetnativeamount =0
 		    # custom fields - any metadata regarding the asset 
-		    assetcustomfield ={"assetmetrics":"kgs",'croptemp':'27','crophumidity':'10','startdate':'2017-03-01','enddate':'2017-04-30',"asset-departuredate":'2017-05-05','owner':'Mark-Farmer'}
+		    assetcustomfield ={"assetmetrics":"packs",'drugtemp':'27','drughumidity':'10','drugid':'P123456','drugidorder':'O123456','drugname':'paracetamol','startdate':'2017-03-01','enddate':'2017-04-30',"asset-departuredate":'2017-05-05','owner':'Mark-Factory'}
 		    # api call to issue the asset.
 		    issueFSasset_return = self.mchain.issueAsset(assetaddress,assetdetails,assetquantity,assetunit,assetnativeamount,assetcustomfield)
 		    # subscribing to the asset
 		    # To query the asset details we have to subscribe to that asset in the chain.
 		    self.assetsubscribe(assetname)
 		    
-		    assetdescription = {"assetname":assetname,"assetquantity":assetquantity,"assetmetrics":"kgs","assetowner":"Mark-Farmer"}
+		    assetdescription = {"assetname":assetname,"assetquantity":assetquantity,"assetmetrics":"Packs","assetowner":"Mark-Factoty"}
 		    message = {"op_return":issueFSasset_return,"assetdescription":assetdescription}
 		    # publishing the response message to the UI.
-		    publish_handler({"node":"farmland","messagecode":"issueasset","messagetype":"resp","message":message})
+		    publish_handler({"node":"factoryX","messagecode":"issueasset","messagetype":"resp","message":message})
 		except Exception as e:
 		    print e,"erro in issueFSasset"
 		    message = {"op_return":"error","message":e}
-		    publish_handler({"node":"farmland","messagecode":"issueasset","messagetype":"resp","message":message})
+		    publish_handler({"node":"factoryX","messagecode":"issueasset","messagetype":"resp","message":message})
 
 	'''****************************************************************************************
 	Function Name 	:   createExchange
@@ -102,8 +102,8 @@ class Farmland:
 		try:
 			# Here asset will be a dictionary ex: {"asset1":1}
 			# Assets involving in the exchange process
-			ownasset = {"crop":20} # offering asset
-			otherasset = {"warehousemoney":20} # asking asset
+			ownasset = {"drug":20} # offering asset
+			otherasset = {"distributormoney":20} # asking asset
 			# Step 1 - Locking the asset quantity that is for the exchange process
 			prepare_return = self.mchain.preparelockunspentexchange(ownasset)
 			print prepare_return
@@ -114,15 +114,15 @@ class Farmland:
 				# checking if createexchange api call success or not
 				if type(createex_return) != dict:				
 					message = {"op_return":str(createex_return),"hexblob":str(createex_return)}
-					publish_handler({"node":"farmland","messagecode":"createexchange","messagetype":"resp","message":message})
+					publish_handler({"node":"factoryX","messagecode":"createexchange","messagetype":"resp","message":message})
 				else:
 					message = {"op_return":createex_return,"hexblob":""}
-					publish_handler({"node":"farmland","messagecode":"createexchange","messagetype":"resp","message":message})						
+					publish_handler({"node":"factoryX","messagecode":"createexchange","messagetype":"resp","message":message})
 			else:
-				publish_handler({"node":"farmland","messagecode":"createexchange","messagetype":"resp","message":""})   
+				publish_handler({"node":"factoryX","messagecode":"createexchange","messagetype":"resp","message":""})
 		except Exception as e:
 			print e,"error in createExchange"
-			publish_handler({"node":"farmland","messagecode":"createexchange","messagetype":"resp","message":"","error":e})       
+			publish_handler({"node":"factoryX","messagecode":"createexchange","messagetype":"resp","message":"","error":e})
 
 
 	'''****************************************************************************************
@@ -160,10 +160,10 @@ class Farmland:
 			else:                
 			    message = {"op_return":"error","message":""}
 			# publishing the message to the UI. 
-			publish_handler({"node":"farmland","messagecode":"updateassetbalance","messagetype":"resp","message":message})
+			publish_handler({"node":"factoryX","messagecode":"updateassetbalance","messagetype":"resp","message":message})
 		except Exception as e:
 			message = {"op_return":"error","message":e}
-			publish_handler({"node":"farmland","messagecode":"updateassetbalance","messagetype":"resp","message":message})
+			publish_handler({"node":"factoryX","messagecode":"updateassetbalance","messagetype":"resp","message":message})
             		print ("The updateassetbalances error",e)    
 
 
@@ -282,7 +282,7 @@ if __name__ == '__main__':
 	chainname = cf.getConfig("chainname")
 
 	# Initializing the Farmland class
-	FL = Farmland(rpcuser,rpcpasswd,rpchost,rpcport,chainname)
+	FL = FactoryX(rpcuser,rpcpasswd,rpchost,rpcport,chainname)
 	FL.connectTochain()
 	# Initializing the pubnub
 	pub_Init()
