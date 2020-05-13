@@ -397,7 +397,7 @@ if __name__ == '__main__':
     chainname = cf.getConfig("chainname")
 
     # Initializing the Distributor class
-    WH = Distributor(rpcuser,rpcpasswd,rpchost,rpcport,chainname)
+    WH = distributor(rpcuser,rpcpasswd,rpchost,rpcport,chainname)
     WH.connectTochain()
     #Initializing the pubnub
     pub_Init()
