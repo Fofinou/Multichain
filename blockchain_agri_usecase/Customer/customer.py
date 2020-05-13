@@ -13,9 +13,9 @@ from fileparser import ConfigFileParser
 
 # Retail store class 
 
-class Retailstore:
+class Customer:
     def __init__(self,rpcuser,rpcpasswd,rpchost,rpcport,chainname):
-        print "Retailstore"
+        print "Customer"
         self.rpcuser = rpcuser
         self.rpcpasswd = rpcpasswd
         self.rpchost = rpchost
@@ -31,11 +31,11 @@ class Retailstore:
     def connectTochain(self):       
         return self.mchain.multichainConnect()
     '''****************************************************************************************
-    Function Name   :   retailstoreAddress
+    Function Name   :   customerAddress
     Description     :   Function used to make api call to get the address of the node
     Parameters      :   None
     ****************************************************************************************'''
-    def retailstoreAddress(self):
+    def customerAddress(self):
         return self.mchain.accountAddress()
     '''****************************************************************************************
     Function Name   :   assetsubscribe
@@ -84,13 +84,13 @@ class Retailstore:
             message = {"op_return":issueRSasset_return,"assetdescription":assetdescription}
             
             self.assetsubscribe(assetname)
-            publish_handler({"node":"retailstore","messagecode":"issueasset","messagetype":"resp","message":message})
+            publish_handler({"node":"customer","messagecode":"issueasset","messagetype":"resp","message":message})
 
 
         except Exception as e:
             print e,"error in issueHWasset"
             message = {"op_return":"error","message":e}
-            publish_handler({"node":"retailstore","messagecode":"issueasset","messagetype":"resp","message":message})
+            publish_handler({"node":"customer","messagecode":"issueasset","messagetype":"resp","message":message})
 
     
     '''****************************************************************************************
@@ -103,8 +103,8 @@ class Retailstore:
         try:
             # The following will give the details regarding the exchange
 
-            ownasset = {"retailmoney":200} #asked asset 
-            otherasset = {"warehouse-crop":4} # offered asset
+            ownasset = {"customermoney":200} #asked asset
+            otherasset = {"distributor-drug":4} # offered asset
 
             # --step1 decode the hexblob you got in the createexchange procedure
             decodedtranx =  self.mchain.decoderawExchange(hexBlob)
@@ -131,11 +131,11 @@ class Retailstore:
             else:
                 message = {"exchange_details":False,"exchange_addedtochain":False} 
         
-            publish_handler({"node":"retailstore","messagecode":"decodeexchange","messagetype":"resp","message":message})         
+            publish_handler({"node":"customer","messagecode":"decodeexchange","messagetype":"resp","message":message})         
         except Exception as e:
             print e
             message = {"exchange_details":False,"exchange_addedtochain":False} 
-            publish_handler({"node":"retailstore","messagecode":"decodeexchange","messagetype":"resp","message":message})                            
+            publish_handler({"node":"customer","messagecode":"decodeexchange","messagetype":"resp","message":message})                            
 
     
     '''****************************************************************************************
@@ -174,10 +174,10 @@ class Retailstore:
                 message = {"op_return":"error","message":""}
             
             # publishing the message to the UI.
-            publish_handler({"node":"retailstore","messagecode":"updateassetbalance","messagetype":"resp","message":message})                        
+            publish_handler({"node":"customer","messagecode":"updateassetbalance","messagetype":"resp","message":message})                        
         except Exception as e:
             message = {"op_return":"error","message":e}
-            publish_handler({"node":"retailstore","messagecode":"updateassetbalance","messagetype":"resp","message":message})
+            publish_handler({"node":"customer","messagecode":"updateassetbalance","messagetype":"resp","message":message})
             print ("The updteassetbalances error",e)            
 
 '''****************************************************************************************
@@ -293,8 +293,8 @@ if __name__ == '__main__':
     rpcport = cf.getConfig("rpcport")
     chainname = cf.getConfig("chainname")
 
-    # Initializing the Retailstore class
-    RS = Retailstore(rpcuser,rpcpasswd,rpchost,rpcport,chainname)
+    # Initializing the customer class
+    RS = Customer(rpcuser,rpcpasswd,rpchost,rpcport,chainname)
     RS.connectTochain()
     # Inititalizing the pubnub
     pub_Init()
