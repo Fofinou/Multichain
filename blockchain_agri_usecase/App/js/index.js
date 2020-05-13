@@ -346,16 +346,16 @@ $(document).ready(function(){
 
     $("#getUpdatebal").click(function(){
         var publishMsg = { "messagecode":"updateassetbalance","messagetype":"req"}
-        var channel = "farmland"
+        var channel = "factory"
         publishMessage(channel,publishMsg)
 
         setTimeout(function(){
-            var channel = "warehouse"
+            var channel = "distributor"
             publishMessage(channel,publishMsg)
         },2000);
                 
         setTimeout(function(){
-            var channel = "retailstore"
+            var channel = "customer"
             publishMessage(channel,publishMsg)
         },2000);
     });
@@ -365,19 +365,19 @@ $(document).ready(function(){
     $('#IssueAsset-farm').click(function(){
         $('input:radio[name=IssueAsset]:nth(0)').attr('checked',true);
         var publishMsg = { "messagecode":"issueasset","messagetype":"req"}
-        var channel = "farmland"
+        var channel = "factoryx"
         publishMessage(channel,publishMsg)
     })
     $('#IssueAsset-warehouse').click(function(){
         $('input:radio[name=IssueAsset]:nth(1)').attr('checked',true);
         var publishMsg = { "messagecode":"issueasset","messagetype":"req"}
-        var channel = "warehouse"
+        var channel = "distributor"
         publishMessage(channel,publishMsg)
     })
     $('#IssueAsset-retailshop').click(function(){
         $('input:radio[name=IssueAsset]:nth(2)').attr('checked',true);
         var publishMsg = { "messagecode":"issueasset","messagetype":"req"}
-        var channel = "retailstore"
+        var channel = "customer"
         publishMessage(channel,publishMsg)
     })
 
@@ -386,26 +386,26 @@ $(document).ready(function(){
     $('#createExchange-farm-warehouse').click(function(){
         $('input:radio[name=createExchange]:nth(0)').attr('checked',true);
         var publishMsg =  {"messagetype":"req","messagecode":"createexchange"}
-        var channel = "farmland"
+        var channel = "factory"
         publishMessage(channel,publishMsg)
     })
     $('#Decode-Exchange-farm-warehouse').click(function(){
         $('input:radio[name=createExchange]:nth(1)').attr('checked',true);
         var publishMsg =  {"messagetype":"req","messagecode":"decodeexchange","hexblob":farm_warehouse_shop_hexblob}
-        var channel = "warehouse"
+        var channel = "distributor"
         publishMessage(channel,publishMsg)
     })
     $('#createExchange-warehouse-shop').click(function(){
         $('input:radio[name=createExchange]:nth(2)').attr('checked',true);
         $('#arrow2').css({fill:"#FF4500"});
         var publishMsg =  {"messagetype":"req","messagecode":"createexchange"}
-        var channel = "warehouse"
+        var channel = "distributor"
         publishMessage(channel,publishMsg)
     })
     $('#Decode-Exchange-warehouse-shop').click(function(){
         $('input:radio[name=createExchange]:nth(3)').attr('checked',true);
         var publishMsg =  {"messagetype":"req","messagecode":"decodeexchange","hexblob":farm_warehouse_shop_hexblob}
-        var channel = "retailstore"
+        var channel = "customer"
         publishMessage(channel,publishMsg)
     })
 

@@ -6,9 +6,15 @@
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />
   </component>
 =======
 >>>>>>> d18ea9168d99f9627d908b6f342916baecedcac1
+=======
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="pytest" />
+  </component>
+>>>>>>> customer
 </module>
