@@ -9,10 +9,10 @@ sys.path.insert(0,parentpath)
 from MultichainPython import Multichainpython
 from fileparser import ConfigFileParser
 
-# Warehouse class
-class Warehouse:
+# Distributor class
+class distributor:
     def __init__(self,rpcuser,rpcpasswd,rpchost,rpcport,chainname):
-        print "Warehouse"
+        print "distributor"
         self.rpcuser = rpcuser
         self.rpcpasswd = rpcpasswd
         self.rpchost = rpchost
@@ -28,11 +28,11 @@ class Warehouse:
     def connectTochain(self):       
         return self.mchain.multichainConnect()
     '''****************************************************************************************
-    Function Name   :   warehouseAddress
+    Function Name   :   distributorAddress
     Description     :   Function used to make api call to get the address of the node
     Parameters      :   None
     ****************************************************************************************'''
-    def warehouseAddress(self):
+    def distributorAddress(self):
         return self.mchain.accountAddress()
     '''****************************************************************************************
     Function Name   :   assetsubscribe
@@ -72,7 +72,7 @@ class Warehouse:
             # Getting the address of the present node.
             assetaddress = self.mchain.accountAddress()
             
-            self.assetname = "warehousemoney" # name of the asset
+            self.assetname = "distributormoney" # name of the asset
             assetdetails = {"name":self.assetname,"open":True} # making the asset open will able us to issuemore in future after creating the asset
             assetquantity = 1000  # quantity of the asset to be created
             assetunit = 1  # Units of the asset to be created
@@ -86,13 +86,13 @@ class Warehouse:
             message = {"op_return":issueWHasset_return,"assetdescription":assetdescription}
             
             self.assetsubscribe(self.assetname)
-            publish_handler({"node":"warehouse","messagecode":"issueasset","messagetype":"resp","message":message})
+            publish_handler({"node":"distributor","messagecode":"issueasset","messagetype":"resp","message":message})
 
 
         except Exception as e:
             print e,"error in issueWHasset"
             message = {"op_return":"error","message":e}
-            publish_handler({"node":"warehouse","messagecode":"issueasset","messagetype":"resp","message":message})
+            publish_handler({"node":"distributor","messagecode":"issueasset","messagetype":"resp","message":message})
 
     '''****************************************************************************************
     Function Name   :   createExchange
@@ -104,8 +104,8 @@ class Warehouse:
         try:
             # Here asset will be a dictionary ex: {"asset1":1}
             # Assets involving in the exchange process
-            ownasset = {"warehouse-crop":4} # offering asset
-            otherasset = {"retailmoney":200} # asking asset
+            ownasset = {"distributor-drug":4} # offering asset
+            otherasset = {"cutomermoney":200} # asking asset
             # Step 1 - Locking the asset quantity that is for the exchange process
             prepare_return = self.mchain.preparelockunspentexchange(ownasset)
             print prepare_return
@@ -117,15 +117,15 @@ class Warehouse:
                 if type(createex_return) != dict:               
 
                     message = {"op_return":str(createex_return),"hexblob":str(createex_return)}
-                    publish_handler({"node":"warehouse","messagecode":"createexchange","messagetype":"resp","message":message})
+                    publish_handler({"node":"distributor","messagecode":"createexchange","messagetype":"resp","message":message})
                 else:
                     message = {"op_return":createex_return,"hexblob":""}
-                    publish_handler({"node":"warehouse","messagecode":"createexchange","messagetype":"resp","message":message})                   
+                    publish_handler({"node":"distributor","messagecode":"createexchange","messagetype":"resp","message":message})
             else:
-                publish_handler({"node":"warehouse","messagecode":"createexchange","messagetype":"resp","message":""})   
+                publish_handler({"node":"distributor","messagecode":"createexchange","messagetype":"resp","message":""})
         except Exception as e:
             print e,"error in createExchange"
-            publish_handler({"node":"warehouse","messagecode":"createexchange","messagetype":"resp","message":""})       
+            publish_handler({"node":"distributor","messagecode":"createexchange","messagetype":"resp","message":""})
 
     '''****************************************************************************************
     Function Name   :   decodeExchange
@@ -137,8 +137,8 @@ class Warehouse:
     def decodeExchange(self,hexBlob):
         # The following will give the details regarding the exchange
         try:    
-            ownasset = {"warehousemoney":20} #asked asset
-            otherasset = {"crop":20} # offered asset
+            ownasset = {"distributormoney":20} #asked asset
+            otherasset = {"drug":20} # offered asset
 
             # --step1 decode the hexblob you got in the createexchange procedure
             decodedtranx =  self.mchain.decoderawExchange(hexBlob)
@@ -165,11 +165,11 @@ class Warehouse:
             else:
                 message = {"exchange_details":False,"exchange_addedtochain":False} 
                 
-            publish_handler({"node":"warehouse","messagecode":"decodeexchange","messagetype":"resp","message":message})         
+            publish_handler({"node":"distributor","messagecode":"decodeexchange","messagetype":"resp","message":message})
 
         except Exception as e:
             message = {"exchange_details":False,"exchange_addedtochain":False} 
-            publish_handler({"node":"warehouse","messagecode":"decodeexchange","messagetype":"resp","message":message})                            
+            publish_handler({"node":"distributor","messagecode":"decodeexchange","messagetype":"resp","message":message})
 
     '''****************************************************************************************
     Function Name   :   convertasset
@@ -182,7 +182,7 @@ class Warehouse:
             # step 1  - Getting the current asset balances
             # to get the names of the present assets in the node
             assetbalances = self.assetbalances()
-            assetname = "warehousemoney"
+            assetname = "distributormoney"
             # Iterating through the result to find out the asset to be processed
             for i in range(0,len(assetbalances)):
                 if assetbalances[i]["name"] != assetname:
@@ -197,7 +197,7 @@ class Warehouse:
             if len(convertasset_details) != 0:
                 if convertasset_details[0].has_key("details"):
                     # giving a new name
-                    convertedasset_name = "warehouse-crop"
+                    convertedasset_name = "distributor-paquets"
                     assetdetails = {"name":convertedasset_name,"open":True} 
                     # giving new quantity for the asset
                     assetquantity = 4 
@@ -235,11 +235,11 @@ class Warehouse:
             else:
                 message = {"op_return":False,"assetdescription":False,"burnasset_op_return":False}
             # publishing the response message to UI. 
-            publish_handler({"node":"warehouse","messagecode":"convertasset","messagetype":"resp","message":message})	    
+            publish_handler({"node":"distributor","messagecode":"convertasset","messagetype":"resp","message":message})
         except Exception as e:
             print e,"convertassetname" 
             message.update({"error":e})
-            publish_handler({"node":"warehouse","messagecode":"convertasset","messagetype":"resp","message":message})            
+            publish_handler({"node":"distributor","messagecode":"convertasset","messagetype":"resp","message":message})
 
     '''****************************************************************************************
     Function Name   :   updateassetbalance
@@ -276,10 +276,10 @@ class Warehouse:
             else:                
                 message = {"op_return":"error","message":""}
             # publish the message to the UI
-            publish_handler({"node":"warehouse","messagecode":"updateassetbalance","messagetype":"resp","message":message})                        
+            publish_handler({"node":"distributor","messagecode":"updateassetbalance","messagetype":"resp","message":message})
         except Exception as e:
             message = {"op_return":"error","message":e}
-            publish_handler({"node":"warehouse","messagecode":"updateassetbalance","messagetype":"resp","message":message})
+            publish_handler({"node":"distributor","messagecode":"updateassetbalance","messagetype":"resp","message":message})
             print ("The updateassetbalances error",e)    
 '''****************************************************************************************
 Function Name   :   pub_Init
@@ -396,8 +396,8 @@ if __name__ == '__main__':
     rpcport = cf.getConfig("rpcport")
     chainname = cf.getConfig("chainname")
 
-    # Initializing the Warehouse class
-    WH = Warehouse(rpcuser,rpcpasswd,rpchost,rpcport,chainname)
+    # Initializing the Distributor class
+    WH = Distributor(rpcuser,rpcpasswd,rpchost,rpcport,chainname)
     WH.connectTochain()
     #Initializing the pubnub
     pub_Init()
