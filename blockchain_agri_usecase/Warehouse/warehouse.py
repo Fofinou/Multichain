@@ -105,7 +105,7 @@ class distributor:
             # Here asset will be a dictionary ex: {"asset1":1}
             # Assets involving in the exchange process
             ownasset = {"distributor-drug":4} # offering asset
-            otherasset = {"cutomermoney":200} # asking asset
+            otherasset = {"customermoney":200} # asking asset
             # Step 1 - Locking the asset quantity that is for the exchange process
             prepare_return = self.mchain.preparelockunspentexchange(ownasset)
             print prepare_return
@@ -197,7 +197,7 @@ class distributor:
             if len(convertasset_details) != 0:
                 if convertasset_details[0].has_key("details"):
                     # giving a new name
-                    convertedasset_name = "distributor-paquets"
+                    convertedasset_name = "distributor-drug"
                     assetdetails = {"name":convertedasset_name,"open":True} 
                     # giving new quantity for the asset
                     assetquantity = 4 
