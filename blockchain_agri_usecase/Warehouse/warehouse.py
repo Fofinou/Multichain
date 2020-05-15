@@ -104,7 +104,7 @@ class distributor:
         try:
             # Here asset will be a dictionary ex: {"asset1":1}
             # Assets involving in the exchange process
-            ownasset = {"drug":4} # offering asset
+            ownasset = {"distributor-drug":4} # offering asset
             otherasset = {"customermoney":200} # asking asset
             # Step 1 - Locking the asset quantity that is for the exchange process
             prepare_return = self.mchain.preparelockunspentexchange(ownasset)
