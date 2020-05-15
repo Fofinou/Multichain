@@ -75,7 +75,7 @@ class FactoryX:
 		    assetunit = 1 # Units of the asset to be created
 		    assetnativeamount =0
 		    # custom fields - any metadata regarding the asset 
-		    assetcustomfield ={"assetmetrics":"packs",'drugtemp':'27','drughumidity':'10','drugid':'P123456','drugidorder':'O123456','drugname':'paracetamol','startdate':'2017-03-01','enddate':'2017-04-30',"asset-departuredate":'2017-05-05','owner':'Mark-Factory'}
+		    assetcustomfield ={"assetmetrics":"packs",'drugtemp':'27','drughumidity':'10','startdate':'2017-03-01','enddate':'2017-04-30',"asset-departuredate":'2017-05-05','owner':'Mark-Factory'}
 		    # api call to issue the asset.
 		    issueFSasset_return = self.mchain.issueAsset(assetaddress,assetdetails,assetquantity,assetunit,assetnativeamount,assetcustomfield)
 		    # subscribing to the asset
