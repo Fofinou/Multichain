@@ -72,7 +72,7 @@ class Customer:
     def issueRSasset(self): 
         try:
             assetaddress = self.mchain.accountAddress()
-            assetname = "retailmoney" 
+            assetname = "customermoney" 
             assetdetails = {"name":assetname,"open":True} # along withthat a unique timestamp will be added
             assetquantity = 1000 
             assetunit = 1 
