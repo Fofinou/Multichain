@@ -58,11 +58,11 @@ pubnub = new PubNub({
     Description   : Dynamically generate table with passed data (list of data)
 ****************************************************************************************/ 
     function dynTable(data,tname){
-        if(tname == "farmland"){
+        if(tname == "factoryX"){
             var datatable = $('#FarmLand-Table');
-        }else if(tname == "warehouse"){
+        }else if(tname == "distributor"){
             var datatable = $('#Warehouse-Table');
-        }else if(tname == "retailstore"){
+        }else if(tname == "customer"){
             var datatable = $('#Retailshop-Table');
         }
         var tdata = data;
@@ -94,12 +94,12 @@ pubnub = new PubNub({
     Description   : Dynamically generate table with passed data(instant individual data)
 ****************************************************************************************/ 
     function UpdateTable(tname,data){
-        if(tname == "farmland"){
+        if(tname == "factoryX"){
             var datatable = $('#FarmLand-Table');
             console.log(datatable)
-        }else if(tname == "warehouse"){
+        }else if(tname == "distributor"){
             var datatable = $('#Warehouse-Table');
-        }else if(tname == "retailstore"){
+        }else if(tname == "customer"){
             var datatable = $('#Retailshop-Table');
         }
         var tdata = data;
@@ -129,9 +129,9 @@ pubnub = new PubNub({
     Description   : Dynamically generate exchangetable with passed data 
 ****************************************************************************************/ 
     function ExchangeTable(tname,data_offer,data_ask){
-        if(tname == "farmland"){
+        if(tname == "factoryX"){
             var datatable = $('#Farm-Warehouse-Table');
-        }else if(tname == "warehouse"){
+        }else if(tname == "distributor"){
             var datatable = $('#Warehouse-Retailshop-Table');
         }
         var tbody = $('<tbody>');
@@ -167,13 +167,13 @@ pubnub = new PubNub({
 
     // Decode Exchange between farmland and warehouse
 
-        if(m.messagecode == "decodeexchange" && m.messagetype == "resp" && m.node == "warehouse"){
+        if(m.messagecode == "decodeexchange" && m.messagetype == "resp" && m.node == "distributor"){
             if(m.message.exchange_details != false && m.message.exchange_addedtochain != false){
                 $('#arrow1').css({fill:"#7CFC00"});
                 $('#Farm-Warehouse-Table').empty();
                 var data_offer = m.message.exchange_details.offer.assets[0]
                 var data_ask = m.message.exchange_details.ask.assets[0]
-                ExchangeTable("farmland",data_offer,data_ask)
+                ExchangeTable("factoryX",data_offer,data_ask)
 
             }else
             {
@@ -184,13 +184,13 @@ pubnub = new PubNub({
 
     // Decode Exchange between warehouse and retailstore
 
-        else if(m.messagecode == "decodeexchange" && m.messagetype == "resp" && m.node == "retailstore"){
+        else if(m.messagecode == "decodeexchange" && m.messagetype == "resp" && m.node == "customer"){
             if(m.message.exchange_details != false && m.message.exchange_addedtochain != false){
                 $('#arrow2').css({fill:"#7CFC00"});
                 $('#Warehouse-Retailshop-Table').empty();
                 var data_offer = m.message.exchange_details.offer.assets[0]
                 var data_ask = m.message.exchange_details.ask.assets[0]
-                ExchangeTable("warehouse",data_offer,data_ask)
+                ExchangeTable("distributor",data_offer,data_ask)
 
             }else
             {
@@ -201,7 +201,7 @@ pubnub = new PubNub({
 
     // Create Exchange between farmland and warehouse
 
-        else if(m.messagecode == "createexchange" && m.messagetype == "resp" && m.node == "farmland"){
+        else if(m.messagecode == "createexchange" && m.messagetype == "resp" && m.node == "factoryX"){
             // create exchange top level error handling
             if(m.message == ""){
                 console.log(m.message.error)
@@ -221,7 +221,7 @@ pubnub = new PubNub({
 
     // Create Exchange between warehouse and retailstore
 
-        else if(m.messagecode == "createexchange" && m.messagetype == "resp" && m.node == "warehouse"){
+        else if(m.messagecode == "createexchange" && m.messagetype == "resp" && m.node == "distributor"){
             // create exchange top level error handling
             if(m.message == ""){
                 console.log(m.message.error)
@@ -240,7 +240,7 @@ pubnub = new PubNub({
 
     // Issueing farmland asset
 
-        else if(m.messagecode == "issueasset" && m.messagetype == "resp" && m.node == "farmland"){
+        else if(m.messagecode == "issueasset" && m.messagetype == "resp" && m.node == "factoryX"){
             if(m.message["op_return"]["error"] != undefined || m.message["op_return"] == "error" || m.message["op_return"] == false){
                 $('input:radio[name=IssueAsset]:nth(0)').attr('checked',false);
                 alert("error")
@@ -248,13 +248,13 @@ pubnub = new PubNub({
             {
                 $('#step_1_circle').css({fill:"#7CFC00"});
                 var data = m.message.assetdescription
-                UpdateTable("farmland",data)
+                UpdateTable("factoryX",data)
                 
             }
         }
     // // Issueing warehouse asset
 
-        else if(m.messagecode == "issueasset" && m.messagetype == "resp" && m.node == "warehouse"){
+        else if(m.messagecode == "issueasset" && m.messagetype == "resp" && m.node == "distributor"){
             if(m.message["op_return"]["error"] != undefined || m.message["op_return"] == "error" || m.message["op_return"] == false){
                 $('input:radio[name=IssueAsset]:nth(1)').attr('checked',false);
                 alert("error")
@@ -262,14 +262,14 @@ pubnub = new PubNub({
             {
                 $('#step_2_circle').css({fill:"#7CFC00"});
                 var data = m.message.assetdescription
-                UpdateTable("warehouse",data)
+                UpdateTable("distributor",data)
                 
             }
         }
 
     // Issueing retailstore asset
 
-        else if(m.messagecode == "issueasset" && m.messagetype == "resp" && m.node == "retailstore"){
+        else if(m.messagecode == "issueasset" && m.messagetype == "resp" && m.node == "customer"){
             if(m.message["op_return"]["error"] != undefined || m.message["op_return"] == "error" || m.message["op_return"] == false){
                 $('input:radio[name=IssueAsset]:nth(2)').attr('checked',false);
                 alert("error")
@@ -277,20 +277,20 @@ pubnub = new PubNub({
             {
                 $('#step_3_circle').css({fill:"#7CFC00"});
                 var data = m.message.assetdescription
-                UpdateTable("retailstore",data)
+                UpdateTable("customer",data)
                 
             }
         }
 
     // Updating farmland asset balances
 
-        else if(m.messagecode == "updateassetbalance" && m.messagetype == "resp" && m.node == "farmland"){
+        else if(m.messagecode == "updateassetbalance" && m.messagetype == "resp" && m.node == "factoryX"){
             if(m.message["op_return"] == "error" || m.message["op_return"] == false){
                 alert("error")
             }else
             {   
                 $('#FarmLand-Table').empty();
-                var table = "farmland"
+                var table = "factoryX"
                 var data = m.message.op_return
                 dynTable(data,table)
             }
@@ -298,13 +298,13 @@ pubnub = new PubNub({
 
     // Updating warehouse asset balances
 
-        else if(m.messagecode == "updateassetbalance" && m.messagetype == "resp" && m.node == "warehouse"){
+        else if(m.messagecode == "updateassetbalance" && m.messagetype == "resp" && m.node == "distributor"){
             if(m.message["op_return"] == "error" || m.message["op_return"] == false){
                 alert("error")
             }else
             {
                 $('#Warehouse-Table').empty();
-                var table = "warehouse"
+                var table = "distributor"
                 var data = m.message.op_return
                 dynTable(data,table)
             }
@@ -312,13 +312,13 @@ pubnub = new PubNub({
 
     // Updating retailstore asset balances
 
-        else if(m.messagecode == "updateassetbalance" && m.messagetype == "resp" && m.node == "retailstore"){
+        else if(m.messagecode == "updateassetbalance" && m.messagetype == "resp" && m.node == "customer"){
             if(m.message["op_return"] == "error" || m.message["op_return"] == false){
                 alert("error")
             }else
             {
                 $('#Retailshop-Table').empty();
-                var table = "retailstore"
+                var table = "customer"
                 var data = m.message.op_return
                 dynTable(data,table)
             }
@@ -332,11 +332,11 @@ $(document).ready(function(){
 
     $("#startProcess").click(function(){
         var publishMsg = { "messagecode":"convertasset","messagetype":"req"}
-        var channel = "warehouse"
+        var channel = "distributor"
         publishMessage(channel,publishMsg)
         
         var publishMsg = { "messagecode":"updateassetbalance","messagetype":"req"}
-        var channel = "warehouse"
+        var channel = "distributor"
         setTimeout(function(){
             publishMessage(channel,publishMsg)
         },3000);
@@ -346,7 +346,7 @@ $(document).ready(function(){
 
     $("#getUpdatebal").click(function(){
         var publishMsg = { "messagecode":"updateassetbalance","messagetype":"req"}
-        var channel = "factory"
+        var channel = "factoryX"
         publishMessage(channel,publishMsg)
 
         setTimeout(function(){
@@ -365,7 +365,7 @@ $(document).ready(function(){
     $('#IssueAsset-farm').click(function(){
         $('input:radio[name=IssueAsset]:nth(0)').attr('checked',true);
         var publishMsg = { "messagecode":"issueasset","messagetype":"req"}
-        var channel = "factoryx"
+        var channel = "factoryX"
         publishMessage(channel,publishMsg)
     })
     $('#IssueAsset-warehouse').click(function(){
@@ -386,7 +386,7 @@ $(document).ready(function(){
     $('#createExchange-farm-warehouse').click(function(){
         $('input:radio[name=createExchange]:nth(0)').attr('checked',true);
         var publishMsg =  {"messagetype":"req","messagecode":"createexchange"}
-        var channel = "factory"
+        var channel = "factoryX"
         publishMessage(channel,publishMsg)
     })
     $('#Decode-Exchange-farm-warehouse').click(function(){
